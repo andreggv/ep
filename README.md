@@ -5,18 +5,18 @@ Este repositório foi criado para a divulgação de códigos fonte de EPs
 
 **A minha intenção não é divulgar respostas de exercícios antes de suas
 respectivas datas de entrega.** Meu objetivo é disponibilizar boas soluções para
-auxiliar estudo dos estudantes curiosos e que realmente querem aprender.
-Portanto, os enunciados também são disponibilizados.
+auxiliar estudantes curiosos e que realmente querem aprender. Sendo assim, os
+enunciados também são disponibilizados.
 
 Façam bom proveito!
 
 # Encontrou algum erro?
 
-Caso você tenha encontrado algum erro em algum dos programas deste repositório,
-por favor, siga uma das seguintes opções:
+Caso você tenha encontrado erro em algum dos programas deste repositório,
+por favor, siga uma das seguintes instruções:
 
-1. Se vc sabe mexer com git, possui uma conta no GitHub e quer contribuir, faça
-   um *fork* do repositório, corrija o erro e faça uma solicitação de *pull*;
-2. Caso contrário, envie-me um email para o endereço do meu perfil.
+1. Se você sabe mexer com git, possui uma conta no GitHub e quer contribuir
+   diretamente, crie um *fork*, corrija o erro e faça uma solicitação de *pull*.
+2. Caso contrário, envie-me um email para o endereço encontrado em meu perfil.
 
-Para todos que me ajudarem, muito obrigado!
+Muito obrigado!
