@@ -11,86 +11,91 @@
 
 /*** Protótipos das funcoes ***/
 
-void le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valmaior);
+int le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valmaior);
+int escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int valmaior);
+void escreve_matriztela(int m[][MAXCOL], int lin, int col);
 
-void escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int valmaior);
-
-/*void escreve_matriztela(int [][MAXCOL], int lin, int col, int valmaior);
-
-void negativo(int a[][MAXCOL], int lin, int col, int *maior);
-
+/*void negativo(int a[][MAXCOL], int lin, int col, int *maior);
 void rebate_horizontal(int a[][MAXCOL], int linhas, int colunas);
-
 void rebate_vertical(int a[][MAXCOL], int linhas, int colunas);
-
 void rotacao(int a[][MAXCOL], int *lin, int *col);
-
 void filtro_mediana(int a[][MAXCOL], int linhas, int colunas, int *maior);
-
 void copia_matriz(int a[][MAXCOL], int b[][MAXCOL], int linhas, int colunas);
-
 int maior_valor_matriz(int a[][MAXCOL], int linhas, int colunas);
-
 int determina_mediana(int a[][MAXCOL], int linhas, int colunas, int i, int j);
-
 void ordena(int v[], int n);
 */
 
+/***  Função main ***/
+
 int main()
 {
-   int img[MAXLIN][MAXCOL];         /* Matriz que representa uma imagem */
-   int nlin;                        /* Número de linhas da imagem */
-   int ncol;                        /* Número de colunas da imagem */ 
-   int valmaior;                    /* Maior tonalidade de cinza da imagem */
-   char imgnome[MAXNOMEARQ];        /* Nome de arquivo sem extensao .pgm */
-   /*char codigo;                     * Código da funcao de transformacao */
+   int img[MAXLIN][MAXCOL];   /* Matriz que representa uma imagem */
+   int nlin;                  /* Número de linhas da imagem */
+   int ncol;                  /* Número de colunas da imagem */ 
+   int valmaior;              /* Maior tonalidade de cinza da imagem */
+   char imgnome[MAXNOMEARQ];  /* Nome de arquivo sem extensao .pgm */
+   char opcao;                /* Opção do menu escolhida pelo usuário*/
 
-   le_arqpgm(imgnome, img, &nlin, &ncol, &valmaior);
+   /* Laço para do programa. Apenas sai dele se o usuário pedir */
+   while (1) {
 
-   escreve_arqpgm(imgnome, img, nlin, ncol, valmaior);
+      /* Primeiro menu que pede ao usuário se ele deseja manipular alguma imagem
+       * ou se deseja sair do programa */
+      printf("\nEscolha uma das opções:\n");
+      printf("   0 - Sair\n");
+      printf("   1 - Manipular uma nova imagem\n");
+      printf("Digite: ");
+      scanf("\n%c", &opcao);
 
-/*escreve_matriz_tela(imagem, nlinhas, ncolunas, maior_valor);
+      /* Sai do laço e finaliza o programa caso a opção 0 foi escolhida */
+      if (opcao != '1')
+         break;
 
-printf("\nLista das possiveis funcoes de transformacao e seus codigos:\n\n");
-printf("n - negativo\n");
-printf("h - rebater na horizontal\n");
-printf("v - rebater na vertical\n");
-printf("r - rotacao\n");
-printf("m - filtro da mediana\n");
+      /* Pega o nome da imagem para fazer as manipulações */
+      printf("\nDigite o nome do arquivo a ser processado sem extensao .pgm: ");
+      scanf("%s", imgnome);
 
-printf("\nDigite o codigo da funcao que deseja aplicar : "); 
-scanf(" %c", &codigo);
+      /* Leitura do arquivo pgm desejado */
+      if (!le_arqpgm(imgnome, img, &nlin, &ncol, &valmaior))
+         continue;
 
-switch (codigo)  {
+      /* Segundo menu para escolher o que o usuário deseja fazer com a imagem
+       * informada */
+      printf("\nEscolha o que deseja fazer com a imagem:\n");
+      printf("   p - imprimir na tela\n");
+      printf("   n - negativo\n");
+      printf("   h - rebater na horizontal\n");
+      printf("   v - rebater na vertical\n");
+      printf("   r - rotacao\n");
+      printf("   m - filtro da mediana\n");
+      printf("Digite: ");
+      scanf("\n%c", &opcao);
+      printf("\n");
 
-  case 'n' : * COMPLETE ... *
+      /* Executa ação referente à opção escolhida */
+      switch (opcao) {
+         case 'p':
+            /* Escreve matriz na tela */
+            escreve_matriztela(img, nlin, ncol);
+            break;
 
-  case 'h' :rebate_horizontal(imagem, nlinhas, ncolunas);
-            printf("\nFuncao REBATE NA HORIZONTAL realizada com sucesso.\n");
-            strcat(inic_nome_arq, "-h"); 
- 	      break;
+         default:
+            printf("Ação ainda não implementada.\n");
 
-  case 'v' : * COMPLETE ... *
+      }
+      
 
-  case 'r' : * COMPLETE ... *
+   }
 
-  case 'm' : * COMPLETE ... *
 
-  default: printf("\nCodigo invalido\n");
-   
+
+
+
+   return EXIT_SUCCESS;
 }
 
-escreve_matriz_tela(imagem, nlinhas, ncolunas, maior_valor);
-
-escreve_arquivo_pgm(inic_nome_arq, imagem, nlinhas, ncolunas, maior_valor);*/
-
-return 0;
-
-}
-
-
-/* Definicoes das funcoes descritas acima */
-
+/* Definições do protótipos das funções */
 
 /* Esta função lê um arquivo de entrada, através do nome que o usuário digitar,
  * e grava na matriz dada. Os parâmetros que devem ser dados são:
@@ -103,8 +108,9 @@ return 0;
  *                 matriz
  *    - valmaior : pontiro para o inteiro que armazena o valor máximo encontrado
  *                 no arquivo
+ * Devolve 1 caso a leitura tenha sido bem sicedida ou 0 caso contrário.
  */
-void le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valmaior)
+int le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valmaior)
 {
    char arqnome[MAXNOMEARQ];  /* Nome completo do arquivo de entrada */
    FILE *arq;                 /* Ponteiro para o arquivo de entrada */
@@ -119,9 +125,7 @@ void le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valma
       for (j = 0; j < MAXCOL; j++)
          img[i][j] = -1;
 
-   /* Pega o nome do arquivo dentro do diretório entrada */
-   printf("Digite o nome do arquivo a ser processado sem extensao .pgm: ");
-   scanf("%s", imgnome);
+   /* Monta nome completo do arquivo */
    strcat(arqnome, "entrada/");
    strcat(arqnome, (const char *) imgnome);
    strcat(arqnome, ".pgm");
@@ -129,26 +133,26 @@ void le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valma
    /* Tenta abrir o arquivo */
    arq = fopen(arqnome, "r");
    if (arq == NULL)  {
-      printf("Erro na abertura do arquivo '%s'. ", arqnome);
-      printf("O arquivo '%s.pgm' está no diretório 'entrada/'?\n", imgnome);
-      exit (EXIT_FAILURE);
+      printf("\nErro na abertura do arquivo '%s'. ", arqnome);
+      printf("O arquivo '%s.pgm' está no diretório 'entrada/'?\n\n", imgnome);
+      return 0;
    }
 
    /* Lê a chave do arquivo */
    if (fscanf(arq, "%s", chave) != 1)  {
       printf("Erro na leitura do arquivo '%s'.\n", arqnome);
-      exit (EXIT_FAILURE);
+      return 0;
    }
    if (strcmp(chave,"P2") != 0)  {
       printf("Formato do arquivo '%s' desconhecido.\n", chave);
-      exit (EXIT_FAILURE);
+      return 0;
    }
 
    /* Lê número de linha e coluna da imagem */
-   if (fscanf(arq, "%d %d\n", lin, col) != 2)  {
+   if (fscanf(arq, "%d %d\n", col, lin) != 2)  {
       printf("Erro ao ler número de linhas e colunas da imagem do arquivo ");
       printf("'%s'.\n", arqnome);
-      exit (EXIT_FAILURE);
+      return 0;
    }
 
    /* Verifica se a imagem é mto grande */
@@ -156,7 +160,7 @@ void le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valma
       printf("A imagem do arquivo '%s' é muito grande para ", arqnome);
       printf("ser processada. O tamanho máximo suportador é: ");
       printf("%d linhas x %d colunas\n", MAXLIN, MAXCOL);
-      exit (EXIT_FAILURE);
+      return 0;
    }
 
 
@@ -164,7 +168,7 @@ void le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valma
    if (fscanf(arq, "%d\n", valmaior) != 1)  {
       printf("Erro ao ler o maior valor da cor da imagem ");
       printf("do arquivo '%s'.\n", arqnome);
-      exit (EXIT_FAILURE);
+      return 0;
    }
 
    /* Lê os valores de cada linha de pixel da coluna e armazena na matriz dada */
@@ -172,7 +176,7 @@ void le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valma
       for (j = 0; j < *col; j++)
          if (fscanf(arq, "%d", &img[i][j]) != 1) {
             printf("Erro ao ler o arquivo. Ele deve estar corrompido.");
-            exit (EXIT_FAILURE);
+            return 0;
          }
 
    /* Fecha arquivo de entrada */
@@ -181,9 +185,9 @@ void le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valma
    /* Imprime mensagem que informa que o arquivo foi carregado com sucesso */
    printf("\nO arquivo '%s' foi carregado com sucesso.\n", arqnome);
 
-   return;
+   /* Devolve valor de sucesso */
+   return 1;
 }
-
 
 /* Encreve a matriz que representa a imagem em um arquivo .pgm no diretório
  * saída. Os parâmetros que devem ser dados são:
@@ -193,7 +197,7 @@ void le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valma
  *    - col      : coluna da imagem.
  *    - valmaior : maior valor de um pixel da imagem
  */
-void escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int valmaior)
+int escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int valmaior)
 {
    char arqnome[MAXNOMEARQ];  /* Nome completo do arquivo de saída */
    FILE *arq;                 /* Ponteiro para o arquivo de saída */
@@ -216,25 +220,25 @@ void escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int val
    if (arq == NULL)  {
       printf("Erro ao tentar escrever '%s'. ", arqnome);
       printf("O diretório 'saida/' existe?\n");
-      exit (EXIT_FAILURE);
+      return 0;
    }
 
    /* Imprime código do cabeçalho do arquivo de saída */
    if (fprintf(arq, "P2\n") == -1) {
       printf("Erro ao imprimir código do cabeçalho do arquivo '%s'.\n", arqnome);
-      exit (EXIT_FAILURE);
+      return 0;
    }
 
    /* Imprime número de linhas e colunas da imagem no arquivo de saída */
-   if (fprintf(arq, "%d %d\n", lin, col) == -1) {
+   if (fprintf(arq, "%d %d\n", col, lin) == -1) {
       printf("Erro ao imprimir número de linhas e colunas no arquivo '%s'.\n", arqnome);
-      exit (EXIT_FAILURE);
+      return 0;
    }
 
    /* Imprime número do maior valor de cor da imagem no arquivo de saída */
    if (fprintf(arq, "%d\n", valmaior) == -1) {
       printf("Erro ao imprimir maior valor de cor da imagem no arquivo '%s'.\n", arqnome);
-      exit (EXIT_FAILURE);
+      return 0;
    }
 
    /* Imprime imagem no arquivo de saída */
@@ -256,7 +260,7 @@ void escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int val
          nchar = fprintf(arq, "%d", valpixel);
          if (nchar == -1) {
             printf("Erro ao imprimir algum pixel no arquivo de saída '%s'.\n", arqnome);
-            exit (EXIT_FAILURE);
+            return 0;
          }
 
          /* Verifica o tamanho da linha. Arquivos .pgm do tipo P2 deve ter 
@@ -266,7 +270,7 @@ void escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int val
             /* Pula linha */
             if (fprintf(arq, "\n") == -1) {
                printf("Erro ao escrever arquivo de saída '%s'.\n", arqnome);
-               exit (EXIT_FAILURE);
+               return 0;
             }
             /* Zera variável contadora de caracteres da linha */
             ncharlin = 0;
@@ -281,7 +285,7 @@ void escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int val
       /* Pula linha  para a mudança de linha da imagem */
       if (fprintf(arq, "\n") == -1) {
          printf("Erro ao escrever arquivo de saída '%s'.\n", arqnome);
-         exit (EXIT_FAILURE);
+         return 0;
       }
 
       /* Zera variável contadora de caracteres da linha */
@@ -293,6 +297,25 @@ void escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int val
 
    /* Imprime mensagem que informa que o arquivo foi carregado com sucesso */
    printf("\nO arquivo '%s' foi carregado com sucesso.\n", arqnome);
+
+   return 1;
+}
+
+/* Dados as inforções de uma matriz de inteiros, a imprime na tela. Os
+ * parâmetros são:
+ *    - m   : matriz de inteiros a ser impressa
+ *    - lin : número de linhas da matriz
+ *    - col : número de colunas da matriz
+ */
+void escreve_matriztela(int m[][MAXCOL], int lin, int col)
+{
+   int i, j;      /* Variáveis contadoras */
+
+   for (i = 0; i < lin; i++) {
+      for (j = 0; j < col; j++)
+         printf("%4d ", m[i][j]);
+      printf("\n");
+   }
 
    return;
 }
