@@ -17,8 +17,8 @@ void escreve_matriztela(int m[][MAXCOL], int lin, int col, int valmaior);
 void cria_arqnomesaida(char resnome[], char imgnome[], char opcao);
 void negativo(int img[][MAXCOL], int res[][MAXCOL], int lin, int col, int valmaior);
 void rebate_horizontal(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
-/*void rebate_vertical(int a[][MAXCOL], int linhas, int colunas);
-void rotacao(int a[][MAXCOL], int *lin, int *col);
+void rebate_vertical(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
+/*void rotacao(int a[][MAXCOL], int *lin, int *col);
 void filtro_mediana(int a[][MAXCOL], int linhas, int colunas, int *maior);
 void copia_matriz(int a[][MAXCOL], int b[][MAXCOL], int linhas, int colunas);
 int maior_valor_matriz(int a[][MAXCOL], int linhas, int colunas);
@@ -91,8 +91,8 @@ int main()
             break;
 
          /* Faz o negativo e salva o resultado em arquivo */
-         case 'h':
-            rebate_horizontal(img, res, nlin, ncol);
+         case 'v':
+            rebate_vertical(img, res, nlin, ncol);
             cria_arqnomesaida(resnome, imgnome, opcao);
             escreve_arqpgm(resnome, res, nlin, ncol, valmaior);
             break;
@@ -101,13 +101,7 @@ int main()
             printf("Ação ainda não implementada.\n");
 
       }
-      
-
    }
-
-
-
-
 
    return EXIT_SUCCESS;
 }
@@ -395,6 +389,24 @@ void rebate_horizontal(int img[][MAXCOL], int res[][MAXCOL], int lin, int col)
    for (i = 0; i < lin; i++)
       for (j = 0; j < col; j++)
          res[lin-1-i][col-1-j] = img[i][j];
+
+   return;
+}
+
+/* Faz transformação que rebate a imagem verticalmente como se ela tivesse sendo
+ * vista do verso. Os parâmetros que devem ser passados são:
+ *    - img      : matriz da imagem de entrada
+ *    - res      : matriz da imagem resultado
+ *    - lin      : número de linhas da matriz
+ *    - col      : número de colunas da matriz
+ */
+void rebate_vertical(int img[][MAXCOL], int res[][MAXCOL], int lin, int col)
+{
+   int i, j;   /* Variáveis contadoras */
+
+   for (i = 0; i < lin; i++)
+      for (j = 0; j < col; j++)
+         res[i][col-1-j] = img[i][j];
 
    return;
 }
