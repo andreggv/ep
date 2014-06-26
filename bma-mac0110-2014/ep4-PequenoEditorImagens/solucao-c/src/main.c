@@ -16,9 +16,8 @@ int escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int valm
 void escreve_matriztela(int m[][MAXCOL], int lin, int col, int valmaior);
 void cria_arqnomesaida(char resnome[], char imgnome[], char opcao);
 void negativo(int img[][MAXCOL], int res[][MAXCOL], int lin, int col, int valmaior);
-
-/*void rebate_horizontal(int a[][MAXCOL], int linhas, int colunas);
-void rebate_vertical(int a[][MAXCOL], int linhas, int colunas);
+void rebate_horizontal(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
+/*void rebate_vertical(int a[][MAXCOL], int linhas, int colunas);
 void rotacao(int a[][MAXCOL], int *lin, int *col);
 void filtro_mediana(int a[][MAXCOL], int linhas, int colunas, int *maior);
 void copia_matriz(int a[][MAXCOL], int b[][MAXCOL], int linhas, int colunas);
@@ -78,14 +77,22 @@ int main()
 
       /* Executa ação referente à opção escolhida */
       switch (opcao) {
+
+         /* Escreve matriz na tela */
          case 'p':
-            /* Escreve matriz na tela */
             escreve_matriztela(img, nlin, ncol, valmaior);
             break;
 
+         /* Faz o negativo e salva o resultado em arquivo */
          case 'n':
-            /* Faz o negativo e salva o resultado em arquivo */
             negativo(img, res, nlin, ncol, valmaior);
+            cria_arqnomesaida(resnome, imgnome, opcao);
+            escreve_arqpgm(resnome, res, nlin, ncol, valmaior);
+            break;
+
+         /* Faz o negativo e salva o resultado em arquivo */
+         case 'h':
+            rebate_horizontal(img, res, nlin, ncol);
             cria_arqnomesaida(resnome, imgnome, opcao);
             escreve_arqpgm(resnome, res, nlin, ncol, valmaior);
             break;
@@ -366,15 +373,28 @@ void negativo(int img[][MAXCOL], int res[][MAXCOL], int lin, int col, int valmai
 {
    int i, j;   /* Variáveis contadoras */
 
-   /* Inicia matriz resultado */
-   for (i = 0; i < MAXLIN; i++)
-      for (j = 0; j < MAXCOL; j++)
-         res[i][j] = -1;
-
    /* Faz a transformação */
    for (i = 0; i < lin; i++)
       for (j = 0; j < col; j++)
          res[i][j] = valmaior - img[i][j];
+
+   return;
+}
+
+/* Faz transformação que deixa a imagem de "ponta cabeça". Os parâmetros que
+ * devem ser passados são:
+ *    - img      : matriz da imagem de entrada
+ *    - res      : matriz da imagem resultado
+ *    - lin      : número de linhas da matriz
+ *    - col      : número de colunas da matriz
+ */
+void rebate_horizontal(int img[][MAXCOL], int res[][MAXCOL], int lin, int col)
+{
+   int i, j;   /* Variáveis contadoras */
+
+   for (i = 0; i < lin; i++)
+      for (j = 0; j < col; j++)
+         res[lin-1-i][col-1-j] = img[i][j];
 
    return;
 }
