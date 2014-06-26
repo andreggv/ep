@@ -47,8 +47,7 @@ Escolha o que deseja fazer com a imagem:
    m - filtro da mediana
 Digite: r
 
-O arquivo 'saida/pernalonga-r.pgm' foi salvado com
-sucesso.
+O arquivo 'saida/pernalonga-r.pgm' foi salvado com sucesso.
 
 Escolha uma das opções:
    0 - Sair
