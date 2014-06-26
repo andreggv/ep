@@ -13,10 +13,11 @@
 
 int le_arqpgm(char imgnome[], int img[][MAXCOL], int *lin, int *col, int *valmaior);
 int escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int valmaior);
-void escreve_matriztela(int m[][MAXCOL], int lin, int col);
+void escreve_matriztela(int m[][MAXCOL], int lin, int col, int valmaior);
+void cria_arqnomesaida(char resnome[], char imgnome[], char opcao);
+void negativo(int img[][MAXCOL], int res[][MAXCOL], int lin, int col, int valmaior);
 
-/*void negativo(int a[][MAXCOL], int lin, int col, int *maior);
-void rebate_horizontal(int a[][MAXCOL], int linhas, int colunas);
+/*void rebate_horizontal(int a[][MAXCOL], int linhas, int colunas);
 void rebate_vertical(int a[][MAXCOL], int linhas, int colunas);
 void rotacao(int a[][MAXCOL], int *lin, int *col);
 void filtro_mediana(int a[][MAXCOL], int linhas, int colunas, int *maior);
@@ -31,10 +32,12 @@ void ordena(int v[], int n);
 int main()
 {
    int img[MAXLIN][MAXCOL];   /* Matriz que representa uma imagem */
+   int res[MAXLIN][MAXCOL];   /* Resultado das transformações */
    int nlin;                  /* Número de linhas da imagem */
    int ncol;                  /* Número de colunas da imagem */ 
    int valmaior;              /* Maior tonalidade de cinza da imagem */
-   char imgnome[MAXNOMEARQ];  /* Nome de arquivo sem extensao .pgm */
+   char imgnome[MAXNOMEARQ];  /* Nome de arquivo de entrada sem extensao .pgm */
+   char resnome[MAXNOMEARQ+2];/* Nome de arquivo resultado sem extensao .pgm */
    char opcao;                /* Opção do menu escolhida pelo usuário*/
 
    /* Laço para do programa. Apenas sai dele se o usuário pedir */
@@ -77,7 +80,14 @@ int main()
       switch (opcao) {
          case 'p':
             /* Escreve matriz na tela */
-            escreve_matriztela(img, nlin, ncol);
+            escreve_matriztela(img, nlin, ncol, valmaior);
+            break;
+
+         case 'n':
+            /* Faz o negativo e salva o resultado em arquivo */
+            negativo(img, res, nlin, ncol, valmaior);
+            cria_arqnomesaida(resnome, imgnome, opcao);
+            escreve_arqpgm(resnome, res, nlin, ncol, valmaior);
             break;
 
          default:
@@ -303,19 +313,60 @@ int escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int valm
 
 /* Dados as inforções de uma matriz de inteiros, a imprime na tela. Os
  * parâmetros são:
- *    - m   : matriz de inteiros a ser impressa
- *    - lin : número de linhas da matriz
- *    - col : número de colunas da matriz
+ *    - m        : matriz de inteiros a ser impressa
+ *    - lin      : número de linhas da matriz
+ *    - col      : número de colunas da matriz
+ *    - valmaior : maior valor de um pixel
  */
-void escreve_matriztela(int m[][MAXCOL], int lin, int col)
+void escreve_matriztela(int m[][MAXCOL], int lin, int col, int valmaior)
 {
    int i, j;      /* Variáveis contadoras */
+   
+   printf("Maior valor: %d\n", valmaior);
+   printf("Dimensões: %d linhas x %d colunas\n", lin, col);
 
+   /* Laço para imprimir na tela os valores dos pixels */
    for (i = 0; i < lin; i++) {
       for (j = 0; j < col; j++)
          printf("%4d ", m[i][j]);
       printf("\n");
    }
+
+   return;
+}
+
+/* Função útil para criar os nomes dos arquivos de saída. Os parâmetros são:
+ *    - resnome : onde o nome do arquivo de saída será armazenado
+ *    - imgnome : nome da imagem sem extensão .pgm
+ *    - opcao   : caractere que será anexado no final do nome
+ */
+void cria_arqnomesaida(char resnome[], char imgnome[], char opcao)
+{
+   int i;      /* Variável contadora */
+
+   for (i = 0; imgnome[i] != '\0'; i++)
+      resnome[i] = imgnome[i];
+   resnome[i] = '-';
+   resnome[i+1] = opcao;
+   resnome[i+2] = '\0';
+
+   return;
+}
+
+/* Cria o negativo da  */
+void negativo(int img[][MAXCOL], int res[][MAXCOL], int lin, int col, int valmaior)
+{
+   int i, j;   /* Variáveis contadoras */
+
+   /* Inicia matriz resultado */
+   for (i = 0; i < MAXLIN; i++)
+      for (j = 0; j < MAXCOL; j++)
+         res[i][j] = -1;
+
+   /* Faz a transformação */
+   for (i = 0; i < lin; i++)
+      for (j = 0; j < col; j++)
+         res[i][j] = valmaior - img[i][j];
 
    return;
 }
