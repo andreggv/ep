@@ -6,7 +6,6 @@
 
 #define MAXLIN       400      /* Número máximo de linhas para matrizes */
 #define MAXCOL       400      /* Número máximo de colunas para matrizes */
-#define MAXVIZ       9        /* Número máximo de vizinhos */ 
 #define MAXNOMEARQ   100      /* Tamanho máximo (80) para nome de arquivo */
 
 /*** Protótipos das funcoes ***/
@@ -18,13 +17,9 @@ void cria_arqnomesaida(char resnome[], char imgnome[], char opcao);
 void negativo(int img[][MAXCOL], int res[][MAXCOL], int lin, int col, int valmaior);
 void rebate_horizontal(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
 void rebate_vertical(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
-/*void rotacao(int a[][MAXCOL], int *lin, int *col);
-void filtro_mediana(int a[][MAXCOL], int linhas, int colunas, int *maior);
-void copia_matriz(int a[][MAXCOL], int b[][MAXCOL], int linhas, int colunas);
-int maior_valor_matriz(int a[][MAXCOL], int linhas, int colunas);
-int determina_mediana(int a[][MAXCOL], int linhas, int colunas, int i, int j);
-void ordena(int v[], int n);
-*/
+void rotacao(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
+void filtro_mediana(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
+int calcula_medianaponto(int img[][MAXCOL], int lin, int col, int i, int j);
 
 /***  Função main ***/
 
@@ -91,10 +86,31 @@ int main()
             break;
 
          /* Faz o negativo e salva o resultado em arquivo */
+         case 'h':
+            rebate_horizontal(img, res, nlin, ncol);
+            cria_arqnomesaida(resnome, imgnome, opcao);
+            escreve_arqpgm(resnome, res, nlin, ncol, valmaior);
+            break;
+
+         /* Faz o negativo e salva o resultado em arquivo */
          case 'v':
             rebate_vertical(img, res, nlin, ncol);
             cria_arqnomesaida(resnome, imgnome, opcao);
             escreve_arqpgm(resnome, res, nlin, ncol, valmaior);
+            break;
+
+         /* Faz o negativo e salva o resultado em arquivo */
+         case 'r':
+            rotacao(img, res, nlin, ncol);
+            cria_arqnomesaida(resnome, imgnome, opcao);
+            escreve_arqpgm(resnome, res, ncol, nlin, valmaior);
+            break;
+
+         /* Faz o negativo e salva o resultado em arquivo */
+         case 'm':
+            filtro_mediana(img, res, nlin, ncol);
+            cria_arqnomesaida(resnome, imgnome, opcao);
+            escreve_arqpgm(resnome, res, ncol, nlin, valmaior);
             break;
 
          default:
@@ -106,7 +122,7 @@ int main()
    return EXIT_SUCCESS;
 }
 
-/* Definições do protótipos das funções */
+/*** Definições do protótipos das funções ***/
 
 /* Esta função lê um arquivo de entrada, através do nome que o usuário digitar,
  * e grava na matriz dada. Os parâmetros que devem ser dados são:
@@ -307,7 +323,7 @@ int escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int valm
    fclose(arq);
 
    /* Imprime mensagem que informa que o arquivo foi carregado com sucesso */
-   printf("\nO arquivo '%s' foi carregado com sucesso.\n", arqnome);
+   printf("\nO arquivo '%s' foi salvado com sucesso.\n", arqnome);
 
    return 1;
 }
@@ -410,3 +426,25 @@ void rebate_vertical(int img[][MAXCOL], int res[][MAXCOL], int lin, int col)
 
    return;
 }
+
+
+/* Faz transformação que rotaciona a imagem. Os parâmetros que devem ser
+ * passados são:
+ *    - img      : matriz da imagem de entrada
+ *    - res      : matriz da imagem resultado
+ *    - lin      : número de linhas da matriz
+ *    - col      : número de colunas da matriz
+ */
+void rotacao(int img[][MAXCOL], int res[][MAXCOL], int lin, int col)
+{
+   int i, j;   /* Variáveis contadoras */
+
+   for (i = 0; i < lin; i++)
+      for (j = 0; j < col; j++)
+         res[col-1-j][i] = img[i][j];
+
+   return;
+}
+
+void filtro_mediana(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
+int calcula_mediana(int img[][MAXCOL], int lin, int col, int i, int j);
