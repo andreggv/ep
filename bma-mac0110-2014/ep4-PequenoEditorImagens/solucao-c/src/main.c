@@ -353,7 +353,15 @@ void cria_arqnomesaida(char resnome[], char imgnome[], char opcao)
    return;
 }
 
-/* Cria o negativo da  */
+/* Cria o negativo da imagem dada e salva em outra matriz resultado. Os
+ * parâmetros que devem ser passados são:
+ *    - img      : matriz da imagem de entrada
+ *    - res      : matriz da imagem resultado
+ *    - lin      : número de linhas da matriz
+ *    - col      : número de colunas da matriz
+ *    - valmaior : maior valor de cor da matriz de entrada (que também é a mesma
+ *                 da matriz resultado)
+ */
 void negativo(int img[][MAXCOL], int res[][MAXCOL], int lin, int col, int valmaior)
 {
    int i, j;   /* Variáveis contadoras */
