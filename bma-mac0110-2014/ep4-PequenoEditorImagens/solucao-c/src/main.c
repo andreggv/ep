@@ -20,6 +20,7 @@ void rebate_vertical(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
 void rotacao(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
 void filtro_mediana(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
 int calcula_medianaponto(int img[][MAXCOL], int lin, int col, int i, int j);
+void insere_numerovetorordenado(int v[], int k, int n);
 
 /***  Função main ***/
 
@@ -427,7 +428,6 @@ void rebate_vertical(int img[][MAXCOL], int res[][MAXCOL], int lin, int col)
    return;
 }
 
-
 /* Faz transformação que rotaciona a imagem. Os parâmetros que devem ser
  * passados são:
  *    - img      : matriz da imagem de entrada
@@ -446,5 +446,65 @@ void rotacao(int img[][MAXCOL], int res[][MAXCOL], int lin, int col)
    return;
 }
 
-void filtro_mediana(int img[][MAXCOL], int res[][MAXCOL], int lin, int col);
-int calcula_mediana(int img[][MAXCOL], int lin, int col, int i, int j);
+/* Aplica filtro mediada na imagem e salva na matriz resultado. Os parâmetros
+ * que devem ser passados são:
+ *    - img      : matriz da imagem de entrada
+ *    - res      : matriz da imagem resultado
+ *    - lin      : número de linhas da matriz
+ *    - col      : número de colunas da matriz
+ */
+void filtro_mediana(int img[][MAXCOL], int res[][MAXCOL], int lin, int col)
+{
+   int i, j;   /* Variáveis contadoras */
+
+   for (i = 0; i < lin; i++)
+      for (j = 0; j < col; j++)
+         res[i][j] = calcula_medianaponto(img, lin, col, i, j);
+
+   return;
+}
+
+/* Calcula a mediana do ponto dado. Os parâmetros que devem ser passados são:
+ *    - img      : matriz da imagem de entrada
+ *    - res      : matriz da imagem resultado
+ *    - lin      : número de linhas da matriz
+ *    - col      : número de colunas da matriz
+ *    - i        : linha do ponto que se deve calcula a mediada
+ *    - j        : coluna do ponto que se deve calcula a mediada
+ */
+int calcula_medianaponto(int img[][MAXCOL], int lin, int col, int i, int j)
+{
+   int x, y, k;      /* Variáveis contadoras */
+   int vizinhos[9];  /* Vizinhos do ponto desejado */
+
+   /* Pega o valor de todos os vizinhos e coloca em um vetor ordenado */
+   k = 0;
+   for (x = i - 1; x <= i + 1; x++) 
+      for (y = j - 1; y <= j + 1; y++)
+         if (x >= 0 && y >= 0 && x < lin && y < col)
+            insere_numerovetorordenado(vizinhos, k++, img[x][y]);
+
+   /* Devolve mediada, tratando se o número de vizinhos é par ou ímpar */
+   return vizinhos[(int)(k/2)];
+}
+
+/* Dado o vetor e um valor ordenado, insere o valor na ordem correta. Os
+ * parâmetros são:
+ *    - v : vetor de inteiros ordenado
+ *    - k : tamanho do vetor (vetor vai de 0 até k - 1)
+ *    - n : valor a ser inserido na ordem
+ */
+void insere_numerovetorordenado(int v[], int k, int n)
+{
+   int i, j;   /* Variáveis contadora */
+
+   for (i = 0; i < k; i++)
+      if (v[i] >= n) {
+         for (j = k; j > i; j--)
+            v[j] = v[j-1];
+         break;
+      }
+   v[i] = n;
+
+   return;
+}
