@@ -6,7 +6,7 @@ Este repositório foi criado para a divulgação de códigos fonte de EPs
 **A minha intenção não é divulgar respostas de exercícios antes de suas
 respectivas datas de entrega.** Meu objetivo é disponibilizar boas soluções para
 auxiliar estudantes curiosos e que realmente querem aprender. Sendo assim, os
-enunciados também são disponibilizados.
+enunciados são encontrados juntamente com a solução e alguns comentários.
 
 Façam bom proveito!
 
