@@ -324,7 +324,7 @@ int escreve_arqpgm(char imgnome[], int img[][MAXCOL], int lin, int col, int valm
    fclose(arq);
 
    /* Imprime mensagem que informa que o arquivo foi carregado com sucesso */
-   printf("\nO arquivo '%s' foi salvado com sucesso.\n", arqnome);
+   printf("O arquivo '%s' foi salvado com sucesso.\n", arqnome);
 
    return 1;
 }
